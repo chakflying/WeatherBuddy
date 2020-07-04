@@ -1,12 +1,16 @@
 package com.example.weatherbuddy.ui
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.weatherbuddy.R
+import com.example.weatherbuddy.data.HKOAPI
+import kotlinx.android.synthetic.main.main_info_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainInfoFragment : Fragment() {
 
@@ -25,8 +29,12 @@ class MainInfoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainInfoViewModel::class.java)
         // TODO: Use the ViewModel
+        val testAPI = HKOAPI()
+        GlobalScope.launch(Dispatchers.Main) {
+            val visibilityResponse = testAPI.getLatestVisibility()
+            textView_visibility.text = visibilityResponse.data.toString()
+        }
     }
 
 }
